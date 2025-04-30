@@ -1,0 +1,30 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+body {
+  font-size: 50px;
+  text-align: center;
+  font-family: "Micro 5", sans-serif;
+}
+#chicken-title {
+    color: black;
+}
+
+#chicken-image {
+    width: 50px;
+    height: 50px;
+    display: none;
+}
+
+#apple-image {
+    width: 50px;
+    height: 50px;
+    display: none;
+}
+
+#canvas {
+    width: 700px;
+    height: 500px;
+    background-color: black;
+}
