@@ -6,9 +6,34 @@ body {
   font-size: 50px;
   text-align: center;
   font-family: "Micro 5", sans-serif;
+  background-color: black;
 }
 #chicken-title {
-    color: black;
+    color: rgb(255, 0, 0);
+    transform: scale(1);
+    animation: pulse 1.8s infinite;
+}
+
+#description {
+    color: rgb(255, 0, 0);
+}
+
+#score-container {
+    color: rgb(255, 0, 0);
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+    }
+
+    70% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(0.95);
+    }
 }
 
 #chicken-image {
