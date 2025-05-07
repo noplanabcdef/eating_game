@@ -2,12 +2,14 @@
     margin: 0px;
     padding: 0px;
 }
+
 body {
   font-size: 50px;
   text-align: center;
   font-family: "Micro 5", sans-serif;
   background-color: black;
 }
+
 #chicken-title {
     color: rgb(255, 0, 0);
     transform: scale(1);
