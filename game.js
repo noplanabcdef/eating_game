@@ -132,3 +132,4 @@ document.addEventListener("DOMContentLoaded", () => {
     // Find an enemy that moves for the chicken
     // Add fire to screen randomly every time apple gets eaten
     // Reset when die
+    // Deploy this
