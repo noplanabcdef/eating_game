@@ -2,12 +2,20 @@ document.addEventListener("DOMContentLoaded", () => {
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
   
-    var chickenX = 300;
-    var chickenY = 200;
-    var appleX = Math.floor(Math.random() * ((canvas.width - 50) / 50 + 1)) * 50;
-    var appleY = Math.floor(Math.random() * ((canvas.height - 50) / 50 + 1)) * 50;
-    var fireX = Math.floor(Math.random() * ((canvas.width - 50) / 50 + 1)) * 50;
-    var fireY = Math.floor(Math.random() * ((canvas.height - 50) / 50 + 1)) * 50;
+    var chickenCoordinates = {
+      x: 300,
+      y: 200,
+    };
+    var appleCoordinates = {
+      x: 0,
+      y: 0,
+    };
+    // appleCoordinates = spawnNewCoordinates()
+    // var fireCoordinates = {
+    //   x: Math.floor(Math.random() * ((canvas.width - 50) / 50 + 1)) * 50,
+    //   y: Math.floor(Math.random() * ((canvas.height - 50) / 50 + 1)) * 50,
+    // };
+    var fireCoordinates = []
   
     document.addEventListener("keydown", move, false);
   
@@ -15,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     var leftPressed = false;
     var upPressed = false;
     var downPressed = false;
+    var score = 0;
 
     function move(event) {
         console.log(event);
@@ -43,29 +52,29 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       function drawChicken() {
         if (rightPressed) {
-          if (chickenX < canvas.width - 50) { //This to prevent chicken from going out the canvas
-            chickenX += 50;
+          if (chickenCoordinates.x < canvas.width - 50) { //This to prevent chicken from going out the canvas
+            chickenCoordinates.x += 50;
           } else {
             death();
           }
         }
         if (leftPressed) {
-          if (chickenX > 0) { //This to prevent chicken from going out the canvas
-            chickenX -= 50;
+          if (chickenCoordinates.x > 0) { //This to prevent chicken from going out the canvas
+            chickenCoordinates.x -= 50;
           } else {
             death();
           }
         }
         if (upPressed) {
-          if (chickenY > 0) { //This to prevent chicken from going out the canvas
-            chickenY -= 50;
+          if (chickenCoordinates.y > 0) { //This to prevent chicken from going out the canvas
+            chickenCoordinates.y -= 50;
           } else {
             death();
           }
         }
         if (downPressed) {
-          if (chickenY < canvas.height - 50) { //This to prevent chicken from going out the canvas
-            chickenY += 50;
+          if (chickenCoordinates.y < canvas.height - 50) { //This to prevent chicken from going out the canvas
+            chickenCoordinates.y += 50;
           } else {
             death();
           }
@@ -73,17 +82,17 @@ document.addEventListener("DOMContentLoaded", () => {
         chickenAppleCollisionCheck();
         chickenFireCollisionCheck();
         var img = document.getElementById("chicken-image");
-        ctx.drawImage(img, chickenX, chickenY, 50, 50);
+        ctx.drawImage(img, chickenCoordinates.x, chickenCoordinates.y, 50, 50);
       }
 
       function drawApple() {
         var appleImg = document.getElementById("apple-image");
-        ctx.drawImage(appleImg, appleX, appleY, 50, 50);
+        ctx.drawImage(appleImg, appleCoordinates.x, appleCoordinates.y, 50, 50);
       }
 
       function drawFire() {
         var fireImg = document.getElementById("fire-image");
-        ctx.drawImage(fireImg, fireX, fireY, 50, 50);
+        ctx.drawImage(fireImg, fireCoordinates.x, fireCoordinates.y, 50, 50);
       }
     
       function draw() {
@@ -98,6 +107,32 @@ document.addEventListener("DOMContentLoaded", () => {
         drawFire();
         ctx.closePath();
       }
+      
+      function spawnNewCoordinates() {
+        var newX = 0;
+        var newY = 0;
+
+        while (true) {
+          newX = Math.floor(Math.random() * ((canvas.width - 50) / 50 + 1)) * 50;
+          newY = Math.floor(Math.random() * ((canvas.height - 50) / 50 + 1)) * 50;
+
+          if (newX != chickenCoordinates.x && newY != chickenCoordinates.y && newX != appleCoordinates.x && newY != appleCoordinates.y) {
+            var overlappingWithExistingCoordinates = false;
+
+            for (let i = 0; i < fireCoordinates.length; i++) {
+              if (newX == fireCoordinates[i].x && newY == fireCoordinates[i].y) {
+                overlappingWithExistingCoordinates = true;
+              }
+            }
+            if (!overlappingWithExistingCoordinates) {
+              return {
+                x: newX,
+                y: newY,
+              }
+            }
+          }
+        }
+      }
 
       function death() {
         alert("Game over")
@@ -105,24 +140,29 @@ document.addEventListener("DOMContentLoaded", () => {
         leftPressed = false;
         upPressed = false;
         downPressed = false;
+<<<<<<< Updated upstream
         reset()
+=======
+        score = 0;
+>>>>>>> Stashed changes
       }
 
       function chickenAppleCollisionCheck() {//Checking if coordinates of chicken and apple are overlapping
-        if (appleX == chickenX && appleY == chickenY) {//&& = And
-          appleX = Math.floor(Math.random() * ((canvas.width - 50) / 50 + 1)) * 50;
-          appleY = Math.floor(Math.random() * ((canvas.height - 50) / 50 + 1)) * 50;
+        if (appleCoordinates.x == chickenCoordinates.x && appleCoordinates.y == chickenCoordinates.y) {//&& = And
+          appleCoordinates = spawnNewCoordinates()
+          score++;
+          document.getElementById("score").innerHTML="score : " + score;
         }
       }
 
       function chickenFireCollisionCheck() {//Checking if coordinates of chicken and apple are overlapping
-        if (fireX == chickenX && fireY == chickenY) {//&& = And
+        if (fireCoordinates.x == chickenCoordinates.x && fireCoordinates.y == chickenCoordinates.y) {//&& = And
           death();
         }
       }
     
-      setInterval(draw, 500);
-      setInterval(move, 300);
+      setInterval(draw, 150);
+      setInterval(move, 150);
     });
     
 
