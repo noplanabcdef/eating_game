@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
         upPressed = false;
         downPressed = false;
 <<<<<<< Updated upstream
-        reset()
+        
 =======
         score = 0;
 >>>>>>> Stashed changes
