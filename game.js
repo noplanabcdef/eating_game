@@ -140,11 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
         leftPressed = false;
         upPressed = false;
         downPressed = false;
-<<<<<<< Updated upstream
-        
-=======
         score = 0;
->>>>>>> Stashed changes
       }
 
       function chickenAppleCollisionCheck() {//Checking if coordinates of chicken and apple are overlapping
