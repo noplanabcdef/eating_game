@@ -10,12 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
       x: 0,
       y: 0,
     };
-    // appleCoordinates = spawnNewCoordinates()
-    // var fireCoordinates = {
-    //   x: Math.floor(Math.random() * ((canvas.width - 50) / 50 + 1)) * 50,
-    //   y: Math.floor(Math.random() * ((canvas.height - 50) / 50 + 1)) * 50,
-    // };
-    var fireCoordinates = []
+    
+    var fireCoordinates = [];
+    appleCoordinates = spawnNewCoordinates();
   
     document.addEventListener("keydown", move, false);
   
@@ -23,6 +20,12 @@ document.addEventListener("DOMContentLoaded", () => {
     var leftPressed = false;
     var upPressed = false;
     var downPressed = false;
+
+    //Get the existing high score from local storage
+    //To access anything from local storage I need to pass in the key to get the value
+    if (localStorage.getItem("high-score")) {
+      document.getElementById("highscore").innerHTML = "highscore : " + localStorage.getItem("high-score");
+    }
     var score = 0;
 
     function move(event) {
@@ -92,9 +95,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       function drawFire() {
         var fireImg = document.getElementById("fire-image");
-        ctx.drawImage(fireImg, fireCoordinates.x, fireCoordinates.y, 50, 50);
+        for (let i = 0; i < fireCoordinates.length; i++) {
+          ctx.drawImage(fireImg, fireCoordinates[i].x, fireCoordinates[i].y, 50, 50);
+        }   
       }
-    
+
       function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.beginPath();
@@ -108,23 +113,23 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.closePath();
       }
       
-      function spawnNewCoordinates() {
+      function spawnNewCoordinates() { //Creates new coordinates, makes sure it doesn't overlap with anything on the grass
         var newX = 0;
         var newY = 0;
 
-        while (true) {
-          newX = Math.floor(Math.random() * ((canvas.width - 50) / 50 + 1)) * 50;
-          newY = Math.floor(Math.random() * ((canvas.height - 50) / 50 + 1)) * 50;
+        while (true) { //Keeps repeating this until there are no coordinates that overlap
+          newX = Math.floor(Math.random() * ((canvas.width - 50) / 50 + 1)) * 50; //Picking a new X location
+          newY = Math.floor(Math.random() * ((canvas.height - 50) / 50 + 1)) * 50; //Picking a new Y location
 
-          if (newX != chickenCoordinates.x && newY != chickenCoordinates.y && newX != appleCoordinates.x && newY != appleCoordinates.y) {
+          if (newX != chickenCoordinates.x && newY != chickenCoordinates.y && newX != appleCoordinates.x && newY != appleCoordinates.y) { //Checks if chicken and apple are overlapping
             var overlappingWithExistingCoordinates = false;
 
-            for (let i = 0; i < fireCoordinates.length; i++) {
+            for (let i = 0; i < fireCoordinates.length; i++) { //Loops through all fire coordinates and makes sure it doesn't overlap
               if (newX == fireCoordinates[i].x && newY == fireCoordinates[i].y) {
-                overlappingWithExistingCoordinates = true;
+                overlappingWithExistingCoordinates = true; //If it overlaps set overlapping to true
               }
             }
-            if (!overlappingWithExistingCoordinates) {
+            if (!overlappingWithExistingCoordinates) { //If doesn't overlap at all then return new coordinates
               return {
                 x: newX,
                 y: newY,
@@ -140,20 +145,39 @@ document.addEventListener("DOMContentLoaded", () => {
         leftPressed = false;
         upPressed = false;
         downPressed = false;
+        setHighScore();
         score = 0;
+        document.getElementById("score").innerHTML = "score : " + score;
+        fireCoordinates = [];
+      }
+
+      function setHighScore() {
+        //I need to create a if to check if the new score is higher than the old one
+        if (score > localStorage.getItem("high-score")) {
+          localStorage.setItem("high-score", score);
+        }
+          document.getElementById("highscore").innerHTML = "highscore : " + localStorage.getItem("high-score");
+      }
+
+      function createNewFire() {
+        var newFireCoordinates = spawnNewCoordinates();
+        fireCoordinates.push(newFireCoordinates);
       }
 
       function chickenAppleCollisionCheck() {//Checking if coordinates of chicken and apple are overlapping
         if (appleCoordinates.x == chickenCoordinates.x && appleCoordinates.y == chickenCoordinates.y) {//&& = And
-          appleCoordinates = spawnNewCoordinates()
+          appleCoordinates = spawnNewCoordinates();
           score++;
           document.getElementById("score").innerHTML="score : " + score;
+          createNewFire();
         }
       }
 
       function chickenFireCollisionCheck() {//Checking if coordinates of chicken and apple are overlapping
-        if (fireCoordinates.x == chickenCoordinates.x && fireCoordinates.y == chickenCoordinates.y) {//&& = And
-          death();
+        for (let i = 0; i < fireCoordinates.length; i++) {
+          if (fireCoordinates[i].x == chickenCoordinates.x && fireCoordinates[i].y == chickenCoordinates.y) {//&& = And
+            death();
+          }
         }
       }
     
