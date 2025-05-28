@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
     document.addEventListener("keydown", move, false);
   
+    var chickenDirection = "left";
     var rightPressed = false;
     var leftPressed = false;
     var upPressed = false;
@@ -36,11 +37,13 @@ document.addEventListener("DOMContentLoaded", () => {
           leftPressed = false;
           upPressed = false;
           downPressed = false;
+          chickenDirection = "right";
         } else if (event.code == "ArrowLeft") {
           leftPressed = true;
           rightPressed = false;
           upPressed = false;
           downPressed = false;
+          chickenDirection = "left";
         } else if (event.code == "ArrowDown") {
           downPressed = true;
           leftPressed = false;
@@ -84,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         chickenAppleCollisionCheck();
         chickenFireCollisionCheck();
-        var img = document.getElementById("chicken-image");
+        var img = document.getElementById("chicken-left-image");
         ctx.drawImage(img, chickenCoordinates.x, chickenCoordinates.y, 50, 50);
       }
 
@@ -94,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       function drawFire() {
-        var fireImg = document.getElementById("fire-image");
+        var fireImg = document.getElementById("fire-animated-1");
         for (let i = 0; i < fireCoordinates.length; i++) {
           ctx.drawImage(fireImg, fireCoordinates[i].x, fireCoordinates[i].y, 50, 50);
         }   
