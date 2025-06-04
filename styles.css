@@ -7,21 +7,25 @@ body {
   font-size: 50px;
   text-align: center;
   font-family: "Micro 5", sans-serif;
-  background-color: black;
+  background-image: url("images/background.jpg");
+  background-repeat: repeat;
 }
 
 #chicken-title {
     color: rgb(255, 0, 0);
+    text-shadow: 0px 4px 4px black;
     transform: scale(1);
     animation: pulse 1.8s infinite;
 }
 
 #description {
     color: rgb(255, 0, 0);
+    text-shadow: 0px 4px 4px black;
 }
 
 #score-container {
     color: rgb(255, 0, 0);
+    text-shadow: 0px 4px 4px black;
 }
 
 @keyframes pulse {
