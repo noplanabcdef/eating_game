@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("keydown", move, false);
   
     var chickenDirection = "left";
+    var animatedFireFrame = 1;
     var rightPressed = false;
     var leftPressed = false;
     var upPressed = false;
@@ -57,6 +58,41 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
       function drawChicken() {
+        // if (rightPressed) {
+        //   if (chickenCoordinates.x < canvas.width - 50) { //This to prevent chicken from going out the canvas
+        //     chickenCoordinates.x += 50;
+        //   } else {
+        //     death();
+        //   }
+        // }
+        // if (leftPressed) {
+        //   if (chickenCoordinates.x > 0) { //This to prevent chicken from going out the canvas
+        //     chickenCoordinates.x -= 50;
+        //   } else {
+        //     death();
+        //   }
+        // }
+        // if (upPressed) {
+        //   if (chickenCoordinates.y > 0) { //This to prevent chicken from going out the canvas
+        //     chickenCoordinates.y -= 50;
+        //   } else {
+        //     death();
+        //   }
+        // }
+        // if (downPressed) {
+        //   if (chickenCoordinates.y < canvas.height - 50) { //This to prevent chicken from going out the canvas
+        //     chickenCoordinates.y += 50;
+        //   } else {
+        //     death();
+        //   }
+        // }
+        chickenAppleCollisionCheck();
+        chickenFireCollisionCheck();
+        var img = document.getElementById("chicken-" + chickenDirection + "-image");
+        ctx.drawImage(img, chickenCoordinates.x, chickenCoordinates.y, 50, 50);
+      }
+
+      function updateChickenLocation() {
         if (rightPressed) {
           if (chickenCoordinates.x < canvas.width - 50) { //This to prevent chicken from going out the canvas
             chickenCoordinates.x += 50;
@@ -85,10 +121,6 @@ document.addEventListener("DOMContentLoaded", () => {
             death();
           }
         }
-        chickenAppleCollisionCheck();
-        chickenFireCollisionCheck();
-        var img = document.getElementById("chicken-left-image");
-        ctx.drawImage(img, chickenCoordinates.x, chickenCoordinates.y, 50, 50);
       }
 
       function drawApple() {
@@ -97,14 +129,26 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       function drawFire() {
-        var fireImg = document.getElementById("fire-animated-1");
+        animatedFireFrame += 1;
+        if (animatedFireFrame > 4) {
+          animatedFireFrame = 1;
+        }
+        var fireImg = document.getElementById("fire-frame-" + animatedFireFrame);
         for (let i = 0; i < fireCoordinates.length; i++) {
           ctx.drawImage(fireImg, fireCoordinates[i].x, fireCoordinates[i].y, 50, 50);
         }   
       }
 
+      function drawBackground() {
+        var img = document.getElementById("game-background");
+        ctx.drawImage(img, 0, 0, 700, 500);
+      }
+
       function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        drawBackground();
+        ctx.closePath();
         ctx.beginPath();
         drawChicken();
         ctx.closePath();
@@ -115,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
         drawFire();
         ctx.closePath();
       }
-      
+
       function spawnNewCoordinates() { //Creates new coordinates, makes sure it doesn't overlap with anything on the grass
         var newX = 0;
         var newY = 0;
@@ -183,7 +227,8 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
       }
-    
+      
+      setInterval(updateChickenLocation, 150);
       setInterval(draw, 150);
       setInterval(move, 150);
     });

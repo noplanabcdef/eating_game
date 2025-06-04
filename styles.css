@@ -57,5 +57,16 @@ body {
 #canvas {
     width: 700px;
     height: 500px;
-    background-color: rgb(68, 254, 0);
+    box-shadow: 0px 0px 10px 5px black;
+}
+
+#chicken-paragraph {
+    width: 30px;
+    height: 30px;
+    padding-right: 10px;
+}
+
+#apple-paragraph {
+    width: 30px;
+    height: 30px;
 }
