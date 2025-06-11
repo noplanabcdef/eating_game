@@ -11,6 +11,23 @@ body {
   background-repeat: repeat;
 }
 
+#grid-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+#settings-container {
+    width: 400px;
+    margin-top: 50%;
+    font-size: 28px;
+    color: rgb(255, 0, 0);
+    text-shadow: 0px 4px 4px black;
+}
+
+#chicken-speed-slider {
+    width: 100%;
+}
+
 #chicken-title {
     color: rgb(255, 0, 0);
     text-shadow: 0px 4px 4px black;

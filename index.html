@@ -11,6 +11,8 @@
     <script type="text/javascript" src="game.js"></script>
 </head>
 <body>
+<div id="grid-container">
+  <div id="game-container">
     <div id="title-container">
         <h1 id="chicken-title">Chicken</h1>
         <p id="description"><img id="chicken-paragraph" src="images/chicken-right.png">make chicken eat apple<img id="apple-paragraph" src="images/apple.png"></p>
@@ -19,46 +21,56 @@
         <span id="highscore">highscore: 0</span>
         <span id="score">your score: 0</span>
     </div>
+      <img
+      id="chicken-left-image"
+      style="width: 50; height: 50; display: none"
+      src="images/chicken-left.png"
+    />
+      <img
+      id="chicken-right-image"
+      style="width: 50; height: 50; display: none"
+      src="images/chicken-right.png"
+    />
     <img
-    id="chicken-left-image"
-    style="width: 50; height: 50; display: none"
-    src="images/chicken-left.png"
-  />
+      id="apple-image"
+      style="width: 50; height: 50; display: none"
+      src="images/apple.png"
+    />
     <img
-    id="chicken-right-image"
-    style="width: 50; height: 50; display: none"
-    src="images/chicken-right.png"
-  />
-  <img
-    id="apple-image"
-    style="width: 50; height: 50; display: none"
-    src="images/apple.png"
-  />
-  <img
-    id="fire-frame-1"
-    style="width: 50; height: 50; display: none"
-    src="images/fire-frame-1.png"
-  />
-  <img
-    id="fire-frame-2"
-    style="width: 50; height: 50; display: none"
-    src="images/fire-frame-2.png"
-  />
-  <img
-    id="fire-frame-3"
-    style="width: 50; height: 50; display: none"
-    src="images/fire-frame-3.png"
-  />
-  <img
-    id="fire-frame-4"
-    style="width: 50; height: 50; display: none"
-    src="images/fire-frame-4.png"
-  />
+      id="fire-frame-1"
+      style="width: 50; height: 50; display: none"
+      src="images/fire-frame-1.png"
+    />
     <img
-    id="game-background"
-    src="images/game-background.png"
-    style="width: 700; height: 500; display: none"
-  />
-  <canvas id="canvas" width="700" height="500"></canvas>
+      id="fire-frame-2"
+      style="width: 50; height: 50; display: none"
+      src="images/fire-frame-2.png"
+    />
+    <img
+      id="fire-frame-3"
+      style="width: 50; height: 50; display: none"
+      src="images/fire-frame-3.png"
+    />
+    <img
+      id="fire-frame-4"
+      style="width: 50; height: 50; display: none"
+      src="images/fire-frame-4.png"
+    />
+      <img
+      id="game-background"
+      src="images/game-background.png"
+      style="width: 700; height: 500; display: none"
+    />
+    <canvas id="canvas" width="700" height="500"></canvas>
+  </div>
+  <div id="settings-container">
+    <div id="chicken-speed-container">
+      <div id="chicken-speed-title">
+        Chicken speed: 3
+      </div>
+      <input type="range" min="1" max="5" value="3" id="chicken-speed-slider">
+    </div>
+  </div>
+</div>
 </body>
 </html>

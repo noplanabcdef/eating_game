@@ -31,8 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     var score = 0;
 
     function move(event) {
-        console.log(event);
-    
+      if (event) {
         if (event.code == "ArrowRight") {
           rightPressed = true;
           leftPressed = false;
@@ -57,41 +56,41 @@ document.addEventListener("DOMContentLoaded", () => {
           downPressed = false;
         }
       }
-      function drawChicken() {
-        // if (rightPressed) {
-        //   if (chickenCoordinates.x < canvas.width - 50) { //This to prevent chicken from going out the canvas
-        //     chickenCoordinates.x += 50;
-        //   } else {
-        //     death();
-        //   }
-        // }
-        // if (leftPressed) {
-        //   if (chickenCoordinates.x > 0) { //This to prevent chicken from going out the canvas
-        //     chickenCoordinates.x -= 50;
-        //   } else {
-        //     death();
-        //   }
-        // }
-        // if (upPressed) {
-        //   if (chickenCoordinates.y > 0) { //This to prevent chicken from going out the canvas
-        //     chickenCoordinates.y -= 50;
-        //   } else {
-        //     death();
-        //   }
-        // }
-        // if (downPressed) {
-        //   if (chickenCoordinates.y < canvas.height - 50) { //This to prevent chicken from going out the canvas
-        //     chickenCoordinates.y += 50;
-        //   } else {
-        //     death();
-        //   }
-        // }
-        chickenAppleCollisionCheck();
-        chickenFireCollisionCheck();
-        var img = document.getElementById("chicken-" + chickenDirection + "-image");
-        ctx.drawImage(img, chickenCoordinates.x, chickenCoordinates.y, 50, 50);
-      }
-
+    }
+    function drawChicken() {
+      // if (rightPressed) {
+      //   if (chickenCoordinates.x < canvas.width - 50) { //This to prevent chicken from going out the canvas
+      //     chickenCoordinates.x += 50;
+      //   } else {
+      //     death();
+      //   }
+      // }
+      // if (leftPressed) {
+      //   if (chickenCoordinates.x > 0) { //This to prevent chicken from going out the canvas
+      //     chickenCoordinates.x -= 50;
+      //   } else {
+      //     death();
+      //   }
+      // }
+      // if (upPressed) {
+      //   if (chickenCoordinates.y > 0) { //This to prevent chicken from going out the canvas
+      //     chickenCoordinates.y -= 50;
+      //   } else {
+      //     death();
+      //   }
+      // }
+      // if (downPressed) {
+      //   if (chickenCoordinates.y < canvas.height - 50) { //This to prevent chicken from going out the canvas
+      //     chickenCoordinates.y += 50;
+      //   } else {
+      //     death();
+      //   }
+      // }
+      chickenAppleCollisionCheck();
+      chickenFireCollisionCheck();
+      var img = document.getElementById("chicken-" + chickenDirection + "-image");
+      ctx.drawImage(img, chickenCoordinates.x, chickenCoordinates.y, 50, 50);
+    }
       function updateChickenLocation() {
         if (rightPressed) {
           if (chickenCoordinates.x < canvas.width - 50) { //This to prevent chicken from going out the canvas
@@ -228,9 +227,31 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
       
-      setInterval(updateChickenLocation, 150);
-      setInterval(draw, 150);
-      setInterval(move, 150);
+      var chickenSpeedSlider = document.getElementById("chicken-speed-slider");
+      chickenSpeedSlider.onchange = function() {
+        document.getElementById("chicken-speed-title").innerHTML = "Chicken speed: " + this.value;
+        clearInterval(chickenSpeed);
+        if (this.value == 1) {
+          chickenSpeed = setInterval(updateChickenLocation, 500);
+        }
+        else if (this.value == 2) {
+          chickenSpeed = setInterval(updateChickenLocation, 400);
+        }
+        else if (this.value == 3) {
+          chickenSpeed = setInterval(updateChickenLocation, 300);
+        }
+        else if (this.value == 4) {
+          chickenSpeed = setInterval(updateChickenLocation, 200);
+        }
+        else {
+          chickenSpeed = setInterval(updateChickenLocation, 100);
+        }
+      }
+
+
+      var chickenSpeed = setInterval(updateChickenLocation, 100); //The number here is milliseconds, the lower the number is the faster the chicken is
+      setInterval(draw, 100);
+      setInterval(move, 100);
     });
     
 
