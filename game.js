@@ -1,7 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
-  
+    
+    var gameStart = false;
+
     var chickenCoordinates = {
       x: 300,
       y: 200,
@@ -13,10 +15,16 @@ document.addEventListener("DOMContentLoaded", () => {
     
     var fireCoordinates = [];
     appleCoordinates = spawnNewCoordinates();
+
+    var foxCoordinates = {
+      x: 400,
+      y: 400,
+    };
   
     document.addEventListener("keydown", move, false);
   
     var chickenDirection = "left";
+    var foxDirection = "left";
     var animatedFireFrame = 1;
     var rightPressed = false;
     var leftPressed = false;
@@ -32,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function move(event) {
       if (event) {
+        gameStart = true;
         if (event.code == "ArrowRight") {
           rightPressed = true;
           leftPressed = false;
@@ -88,6 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // }
       chickenAppleCollisionCheck();
       chickenFireCollisionCheck();
+      chickenFoxCollisionCheck();
       var img = document.getElementById("chicken-" + chickenDirection + "-image");
       ctx.drawImage(img, chickenCoordinates.x, chickenCoordinates.y, 50, 50);
     }
@@ -122,6 +132,48 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
+      var foxSpeedDirection = "up"
+
+      function updateFoxLocation() {
+        if (gameStart) {
+          var diffX = chickenCoordinates.x - foxCoordinates.x;
+          var diffY = chickenCoordinates.y - foxCoordinates.y;
+          var absDiffX = Math.abs(diffX);
+          var absDiffY = Math.abs(diffY);
+          if (absDiffX > absDiffY) {
+            if (diffX > 0) {
+              foxCoordinates.x += 50;
+            } else {
+              foxCoordinates.x -= 50;
+            }
+          } else {
+            if (diffY > 0) {
+              foxCoordinates.y += 50;
+            } else {
+              foxCoordinates.y -= 50;
+            }
+          }
+        }
+        // if (foxCoordinates.x >= canvas.width - 50) {
+        //   foxSpeedDirection = "down"          
+        // } else if (foxCoordinates.x <= 50) {
+        //   foxSpeedDirection = "up"          
+        // } else if (foxCoordinates.y >= canvas.height - 50) {
+        //   foxSpeedDirection = "left"          
+        // } else if (foxCoordinates.y <= 50) {
+        //   foxSpeedDirection = "right"          
+        // }
+        // if (foxSpeedDirection == "up") {
+        //   foxCoordinates.y -= 50;
+        // } else if (foxSpeedDirection == "down") {
+        //   foxCoordinates.y += 50;
+        // } else if (foxSpeedDirection == "left") {
+        //   foxCoordinates.x -= 50;
+        // } else if (foxSpeedDirection == "right") {
+        //   foxCoordinates.x += 50;
+        // }
+      }
+
       function drawApple() {
         var appleImg = document.getElementById("apple-image");
         ctx.drawImage(appleImg, appleCoordinates.x, appleCoordinates.y, 50, 50);
@@ -136,6 +188,16 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i = 0; i < fireCoordinates.length; i++) {
           ctx.drawImage(fireImg, fireCoordinates[i].x, fireCoordinates[i].y, 50, 50);
         }   
+      }
+
+      function drawFox() {
+        if (foxCoordinates.x > chickenCoordinates.x) {
+          foxDirection = "left"
+        } else {
+          foxDirection = "right"
+        }
+        var foxImg = document.getElementById("fox-" + foxDirection + "-image");
+        ctx.drawImage(foxImg, foxCoordinates.x, foxCoordinates.y, 50, 50);
       }
 
       function drawBackground() {
@@ -156,6 +218,9 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.closePath();
         ctx.beginPath();
         drawFire();
+        ctx.closePath();
+        ctx.beginPath();
+        drawFox();
         ctx.closePath();
       }
 
@@ -187,6 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       function death() {
         alert("Game over")
+        gameStart = false;
         rightPressed = false;
         leftPressed = false;
         upPressed = false;
@@ -195,6 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
         score = 0;
         document.getElementById("score").innerHTML = "score : " + score;
         fireCoordinates = [];
+        foxCoordinates = spawnNewCoordinates()
       }
 
       function setHighScore() {
@@ -226,6 +293,13 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
       }
+
+      function chickenFoxCollisionCheck() {
+        if (foxCoordinates.x == chickenCoordinates.x && foxCoordinates.y == chickenCoordinates.y) {
+          death()
+        }
+      }
+
       
       var chickenSpeedSlider = document.getElementById("chicken-speed-slider");
       chickenSpeedSlider.onchange = function() {
@@ -249,7 +323,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
 
-      var chickenSpeed = setInterval(updateChickenLocation, 100); //The number here is milliseconds, the lower the number is the faster the chicken is
+      var chickenSpeed = setInterval(updateChickenLocation, 300); //The number here is milliseconds, the lower the number is the faster the chicken is
+      var foxSpeed = setInterval(updateFoxLocation, 600);
       setInterval(draw, 100);
       setInterval(move, 100);
     });
@@ -263,3 +338,4 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add fire to screen randomly every time apple gets eaten
     // Reset when die
     // Deploy this
+    // Change speed of fox
