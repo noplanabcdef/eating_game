@@ -366,10 +366,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // To Do
-    // Find one more minecraft image the chicken can eat
-    // Find an enemy that doesn't move for chicken
-    // Find an enemy that moves for the chicken
-    // Add fire to screen randomly every time apple gets eaten
-    // Reset when die
-    // Deploy this
     // Change speed of fox (Fox slider)
+    // Add more sound effects
