@@ -338,4 +338,4 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add fire to screen randomly every time apple gets eaten
     // Reset when die
     // Deploy this
-    // Change speed of fox
+    // Change speed of fox (Fox slider)
