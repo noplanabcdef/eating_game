@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
     
     var gameStart = false;
 
+    var canPlayTaunt = true;
+
     var chickenCoordinates = {
       x: 300,
       y: 200,
@@ -205,6 +207,14 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.drawImage(img, 0, 0, 700, 500);
       }
 
+      function drawOverlay() {
+        var overlayImg = document.getElementById("overlay")
+        ctx.drawImage(overlayImg, 0, 0, 700, 500)
+        ctx.font = "30px Arial"
+        ctx.fillStyle = "white"
+        ctx.fillText("Press arrow key to start", 190, 300);
+      }
+
       function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.beginPath();
@@ -222,6 +232,11 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.beginPath();
         drawFox();
         ctx.closePath();
+        if (gameStart == false) {
+          ctx.beginPath();
+          drawOverlay();
+          ctx.closePath();
+        }
       }
 
       function spawnNewCoordinates() { //Creates new coordinates, makes sure it doesn't overlap with anything on the grass
@@ -251,12 +266,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       function death() {
-        alert("Game over")
         gameStart = false;
         rightPressed = false;
         leftPressed = false;
         upPressed = false;
         downPressed = false;
+        canPlayTaunt = true;
+        var deathAudio = new Audio("sounds/dead.wav");
+        deathAudio.play();  
         setHighScore();
         score = 0;
         document.getElementById("score").innerHTML = "score : " + score;
@@ -280,6 +297,8 @@ document.addEventListener("DOMContentLoaded", () => {
       function chickenAppleCollisionCheck() {//Checking if coordinates of chicken and apple are overlapping
         if (appleCoordinates.x == chickenCoordinates.x && appleCoordinates.y == chickenCoordinates.y) {//&& = And
           appleCoordinates = spawnNewCoordinates();
+          var audio = new Audio("sounds/eat_apple_sound.ogg");
+          audio.play();  
           score++;
           document.getElementById("score").innerHTML="score : " + score;
           createNewFire();
@@ -297,6 +316,21 @@ document.addEventListener("DOMContentLoaded", () => {
       function chickenFoxCollisionCheck() {
         if (foxCoordinates.x == chickenCoordinates.x && foxCoordinates.y == chickenCoordinates.y) {
           death()
+        }
+
+        if (canPlayTaunt) {
+          var diffX = chickenCoordinates.x - foxCoordinates.x;
+          var diffY = chickenCoordinates.y - foxCoordinates.y;
+          var absDiffX = Math.abs(diffX);
+          var absDiffY = Math.abs(diffY);
+        if (absDiffX <= 10 || absDiffY <= 10) {
+          var tauntAudio = new Audio("sounds/ankles_broken.mp3");
+          tauntAudio.play();
+          canPlayTaunt = false;
+          setTimeout(function() {
+            canPlayTaunt = true;
+            }, 5000);
+          }
         }
       }
 
