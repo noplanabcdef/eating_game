@@ -356,6 +356,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
+      var foxSpeedSlider = document.getElementById("fox-speed-slider");
+      foxSpeedSlider.onchange = function() {
+        document.getElementById("fox-speed-title").innerHTML = "fox speed: " + this.value;
+        clearInterval(foxSpeed);
+        if (this.value == 1) {
+          foxSpeed = setInterval(updateFoxLocation, 500);
+        }
+        else if (this.value == 2) {
+          foxSpeed = setInterval(updateFoxLocation, 400);
+        }
+        else if (this.value == 3) {
+          foxSpeed = setInterval(updateFoxLocation, 300);
+        }
+        else if (this.value == 4) {
+          foxSpeed = setInterval(updateFoxLocation, 200);
+        }
+        else {
+          foxSpeed = setInterval(updateFoxLocation, 100);
+        }
+      }
+
 
       var chickenSpeed = setInterval(updateChickenLocation, 300); //The number here is milliseconds, the lower the number is the faster the chicken is
       var foxSpeed = setInterval(updateFoxLocation, 600);
@@ -368,3 +389,4 @@ document.addEventListener("DOMContentLoaded", () => {
     // To Do
     // Change speed of fox (Fox slider)
     // Add more sound effects
+    // Add sound effect when game starts

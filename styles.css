@@ -28,6 +28,10 @@ body {
     width: 100%;
 }
 
+#fox-speed-slider {
+    width: 100%;
+}
+
 #chicken-title {
     color: rgb(255, 0, 0);
     text-shadow: 0px 4px 4px black;
